@@ -9,7 +9,7 @@ CREATE USER 'progava'@'172.17.0.1' IDENTIFIED BY 'root';
 GRANT ALL PRIVILEGES ON *.* TO 'progava'@'172.17.0.1' WITH GRANT OPTION;
 ```
 
-## Create tables
+## Create database & tables
 
 ```SQL
 CREATE DATABASE dao;
