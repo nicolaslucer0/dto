@@ -153,7 +153,8 @@ public class AlumnoGUI extends javax.swing.JFrame {
             }
         });
 
-        urlDBTextField.setText("jdbc:mysql://localhost:3306/efc?serverTimezone=UTC");
+        urlDBTextField.setText("jdbc:mysql://localhost:3306/dao?serverTimezone=UTC");
+        urlDBTextField.setToolTipText("");
 
         jLabel1.setText("URL");
 
@@ -249,7 +250,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(repoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 714, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
