@@ -153,7 +153,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
             }
         });
 
-        urlDBTextField.setText("jdbc:mysql://localhost:3306/dao?serverTimezone=UTC");
+        urlDBTextField.setText("jdbc:mysql://localhost:33060/dao?serverTimezone=UTC");
         urlDBTextField.setToolTipText("");
 
         jLabel1.setText("URL");

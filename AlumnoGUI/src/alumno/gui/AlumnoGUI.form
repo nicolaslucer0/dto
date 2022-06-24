@@ -246,7 +246,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="urlDBTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jdbc:mysql://localhost:3306/dao?serverTimezone=UTC"/>
+            <Property name="text" type="java.lang.String" value="jdbc:mysql://localhost:33060/dao?serverTimezone=UTC"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
