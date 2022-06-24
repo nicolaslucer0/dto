@@ -315,7 +315,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
             dao = daoTXT;
         } catch (DAOAlumnoFactoryException ex) {
             Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex);
-            // TODO Mostrar error en un POPUP
+            JOptionPane.showMessageDialog(this, "Error Dao Factory" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         System.out.println("¡¡¡ DAO TXT creado !!!");
