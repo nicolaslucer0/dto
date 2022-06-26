@@ -14,28 +14,21 @@ import dao.DAOException;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.table.TableModel;
 import persona.Alumno;
 import persona.AlumnoException;
 import persona.PersonaException;
 
-/**
- *
- * @author Gabriel
- */
 public class AlumnoGUI extends javax.swing.JFrame {
 
     private DAO<Alumno, Integer> dao;
     private AlumnoDAOSQL daoSQL;
     private AlumnoDAOTXT daoTXT;
-    
+
     /**
      * Creates new form AlumnoGUI
      */
@@ -43,10 +36,10 @@ public class AlumnoGUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Alumnos GUI");
-        
+
         alumnoModel = new AlumnoModel();
         alumnosTable.setModel(alumnoModel);
-        
+
         jPanel1.setVisible(false);
         urlDBTextField.setEnabled(false);
     }
@@ -298,20 +291,20 @@ public class AlumnoGUI extends javax.swing.JFrame {
     private void fileSystemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSystemButtonActionPerformed
         JFileChooser chooser = new JFileChooser();
         int resp = chooser.showOpenDialog(this);
-        
-        if (resp!=JFileChooser.APPROVE_OPTION) {
+
+        if (resp != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        
+
         File file = chooser.getSelectedFile();
         fullPathTextField.setText(file.getAbsolutePath());
-        
+
         Map<String, String> config = new HashMap<>();
         config.put(DAOAlumnoFactory.TIPO_DAO, DAOAlumnoFactory.TIPO_DAO_TXT);
         config.put(DAOAlumnoFactory.FILE_NAME, fullPathTextField.getText());
-        
+
         try {
-            daoTXT = (AlumnoDAOTXT)DAOAlumnoFactory.getInstance().getDAO(config);
+            daoTXT = (AlumnoDAOTXT) DAOAlumnoFactory.getInstance().getDAO(config);
             dao = daoTXT;
         } catch (DAOAlumnoFactoryException ex) {
             Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -319,14 +312,14 @@ public class AlumnoGUI extends javax.swing.JFrame {
             return;
         }
         System.out.println("¡¡¡ DAO TXT creado !!!");
-        
+
         try {
             alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
         } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error de conexion: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         // Habiliar Componentes
         verEliminadosRadioButton.setEnabled(true);
         habilitarBotones();
@@ -338,50 +331,49 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     private void modificarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarButtonActionPerformed
         Alumno alu = getSelectedAlumno();
-        if (alu==null) {
+        if (alu == null) {
             return;
         }
         Alumno aluOrigen = new Alumno();
         backupAlumno(aluOrigen, alu);
         // TODO Show Modal
         AlumnoDialog dialog = new AlumnoDialog(this, true);
-        try {            
+        try {
             dialog.changeEstadoDNI(false);
-            dialog.mostrar(alu, true); 
+            dialog.mostrar(alu, true);
         } catch (PersonaException | AlumnoException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        try {            
-            
-            if(aluModificado(aluOrigen, alu))
-                alu.setEstado('M');   
-                
+        try {
+
+            if (aluModificado(aluOrigen, alu)) {
+                alu.setEstado('M');
+            }
+
             dao.update(alu);
         } catch (DAOException | AlumnoException ex) {
             JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         alumnoModel.refrescarModelo();
-                
+
     }//GEN-LAST:event_modificarButtonActionPerformed
 
-    private boolean aluModificado (Alumno aluOri, Alumno aluMod)
-    {
-        return ( !aluOri.getApyNom().equals(aluMod.getApyNom())                  
-                || !aluOri.getSexo().equals(aluMod.getSexo())  
-                || !aluOri.getFechaNac().equals(aluMod.getFechaNac()) 
-                || !aluOri.getCantMatAprob().equals(aluMod.getCantMatAprob()) 
-                || !aluOri.getPromedio().equals(aluMod.getPromedio()) 
-                || !aluOri.getFechaIngreso().equals(aluMod.getFechaIngreso())                
-                );
+    private boolean aluModificado(Alumno aluOri, Alumno aluMod) {
+        return (!aluOri.getApyNom().equals(aluMod.getApyNom())
+                || !aluOri.getSexo().equals(aluMod.getSexo())
+                || !aluOri.getFechaNac().equals(aluMod.getFechaNac())
+                || !aluOri.getCantMatAprob().equals(aluMod.getCantMatAprob())
+                || !aluOri.getPromedio().equals(aluMod.getPromedio())
+                || !aluOri.getFechaIngreso().equals(aluMod.getFechaIngreso()));
     }
-            
+
     private Alumno getSelectedAlumno() throws HeadlessException {
         final int selectedRow = alumnosTable.getSelectedRow();
-        if (selectedRow<0) {
+        if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado un alumno", "Error", JOptionPane.INFORMATION_MESSAGE);
             return null;
         }
@@ -390,33 +382,33 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
         Alumno alu = getSelectedAlumno();
-        if (alu==null) {
+        if (alu == null) {
             return;
         }
-        
-        int resp = JOptionPane.showConfirmDialog(this, "Estás seguro que querés eliminar a "+alu.getApyNom(), "Confirmar Eliminación", 
+
+        int resp = JOptionPane.showConfirmDialog(this, "Estás seguro que querés eliminar a " + alu.getApyNom(), "Confirmar Eliminación",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
-        if (resp==JOptionPane.YES_OPTION) {
+
+        if (resp == JOptionPane.YES_OPTION) {
             try {
                 dao.delete(alu.getDni());
                 alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
             } catch (DAOException ex) {
                 JOptionPane.showMessageDialog(this, "Eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
+
             alumnoModel.refrescarModelo();
         }
     }//GEN-LAST:event_eliminarButtonActionPerformed
 
     private void consultarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarButtonActionPerformed
         Alumno alu = getSelectedAlumno();
-        if (alu==null) {
+        if (alu == null) {
             return;
         }
-        
+
         AlumnoDialog dialog = new AlumnoDialog(this, true);
-        try {            
+        try {
             dialog.changeEstadoDNI(false);
             dialog.mostrar(alu, false);
         } catch (PersonaException | AlumnoException ex) {
@@ -425,49 +417,48 @@ public class AlumnoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarButtonActionPerformed
 
     private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
-    try {        
-        // Show Modal
-        AlumnoDialog dialog = new AlumnoDialog(this, true);
-        Alumno alu;
-        
-        dialog.changeEstadoDNI(true);
-        alu = dialog.mostrar(null, false);        
-        
-        if (alu!=null) {
-            try {
-                dao.create(alu);
-            } catch (DAOException ex) {
-                Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            // Show Modal
+            AlumnoDialog dialog = new AlumnoDialog(this, true);
+            Alumno alu;
+
+            dialog.changeEstadoDNI(true);
+            alu = dialog.mostrar(null, false);
+
+            if (alu != null) {
+                try {
+                    dao.create(alu);
+                } catch (DAOException ex) {
+                    Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                alumnoModel.getLista().add(alu);
+                alumnoModel.refrescarModelo();
             }
-            alumnoModel.getLista().add(alu);
-            alumnoModel.refrescarModelo();
-        }
-        
+
         } catch (PersonaException | AlumnoException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } 
-        
+        }
+
     }//GEN-LAST:event_agregarButtonActionPerformed
 
     private void repoComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_repoComboBoxItemStateChanged
         String tipoDAO = repoComboBox.getSelectedItem().toString();
+        
         if ("TXT".equals(tipoDAO)) {
             jPanel1.setVisible(false);
             pnlTXT.setVisible(true);
-            if (daoTXT != null)            
-                dao = daoTXT;            
-        }
-        else if (daoSQL==null){
+            if (daoTXT != null) 
+                dao = daoTXT;
+           
+        } else {
             jPanel1.setVisible(true);
             urlDBTextField.setEnabled(true);
             pnlTXT.setVisible(false);
+            if (daoSQL == null)
+                dao = daoSQL;
         }
-        else {
-            dao = daoSQL;            
-        }
-        
-        if(dao != null)
-        {
+
+        if (dao != null) {
             try {
                 alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
             } catch (DAOException ex) {
@@ -475,12 +466,12 @@ public class AlumnoGUI extends javax.swing.JFrame {
             }
             alumnoModel.refrescarModelo();
         }
-        
+
     }//GEN-LAST:event_repoComboBoxItemStateChanged
 
     private void connDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connDBButtonActionPerformed
         Map<String, String> config = new HashMap();
-        
+
         config.put(DAOAlumnoFactory.TIPO_DAO, DAOAlumnoFactory.TIPO_DAO_SQL);
         config.put(DAOAlumnoFactory.URL_DB, urlDBTextField.getText());
         config.put(DAOAlumnoFactory.USER, userDBTextField.getText());
@@ -494,31 +485,27 @@ public class AlumnoGUI extends javax.swing.JFrame {
         }
         System.out.println("Connection DB OK!!!");
         habilitarBotones();
-        
+
         try {
             alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
         } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar la grilla", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         // Habiliar Componentes
         verEliminadosRadioButton.setEnabled(true);
         habilitarBotones();
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_connDBButtonActionPerformed
 
     private void verEliminadosRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEliminadosRadioButtonActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_verEliminadosRadioButtonActionPerformed
 
-    
-    
-    
+
     private void verEliminadosRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_verEliminadosRadioButtonItemStateChanged
         try {
             alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
@@ -569,7 +556,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
         eliminarButton.setEnabled(true);
         consultarButton.setEnabled(true);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarButton;
     private javax.swing.JTable alumnosTable;
@@ -595,7 +582,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
     AlumnoModel alumnoModel;
 
     private void backupAlumno(Alumno aluOrigen, Alumno alu) {
-        
+
         try {
             aluOrigen.setDni(alu.getDni());
             aluOrigen.setApyNom(alu.getApyNom());
@@ -608,8 +595,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
         } catch (PersonaException | AlumnoException ex) {
             JOptionPane.showMessageDialog(this, "Error al procesar los datos personales", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-    }
 
+    }
 
 }
