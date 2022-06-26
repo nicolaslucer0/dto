@@ -13,6 +13,7 @@ import dao.DAOAlumnoFactoryException;
 import dao.DAOException;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -263,11 +264,14 @@ public class AlumnoGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(repoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(repoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(verEliminadosRadioButton)
@@ -438,23 +442,21 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     private void repoComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_repoComboBoxItemStateChanged
         String tipoDAO = repoComboBox.getSelectedItem().toString();
-        
+        alumnoModel.setLista(new ArrayList<>());
         if ("TXT".equals(tipoDAO)) {
             jPanel1.setVisible(false);
-            pnlTXT.setVisible(true);
-            if (daoTXT != null) 
-                dao = daoTXT;
-           
+            pnlTXT.setVisible(true);    
+            dao = daoTXT;
         } else {
             jPanel1.setVisible(true);
             urlDBTextField.setEnabled(true);
-            pnlTXT.setVisible(false);
-            if (daoSQL == null)
-                dao = daoSQL;
+            pnlTXT.setVisible(false);    
+            dao = daoSQL;
         }
 
         if (dao != null) {
             try {
+                disableConnectionButtons();
                 alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
             } catch (DAOException ex) {
                 Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex); //cambiar texto
@@ -463,6 +465,13 @@ public class AlumnoGUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_repoComboBoxItemStateChanged
+
+    private void disableConnectionButtons() {
+        urlDBTextField.setEnabled(false);
+        passwordDBField.setEnabled(false);
+        userDBTextField.setEnabled(false);
+        connDBButton.setEnabled(false);
+    }
 
     private void connDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connDBButtonActionPerformed
         Map<String, String> config = new HashMap();
@@ -482,6 +491,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
         habilitarBotones();
 
         try {
+            disableConnectionButtons();
             alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
         } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar la grilla", "Error", JOptionPane.ERROR_MESSAGE);
