@@ -64,7 +64,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Integer>{
                 campos = linea.split(Persona.DELIM);
                 if (Integer.valueOf(campos[0]).equals(dni)) {
                     Alumno alu = Alumno.string2Alumno(campos);
-                    if (alu.getEstado()!='B') {
+                    if (alu.getEstado()!='I') {
                         return alu;
                     }
                     return null;
@@ -107,11 +107,11 @@ public class AlumnoDAOTXT extends DAO<Alumno, Integer>{
     @Override
     public void delete(Integer dni) throws AlumnoDAOException {
     
-// Borrado lógico - Marcarlo como borrado
-        // Leer el alumno y setear el estado en 'B'
+        // Borrado lógico - Marcarlo como borrado
+        // Leer el alumno y setear el estado en 'I'
         Alumno alu = read(dni);
         try {
-            alu.setEstado('B');
+            alu.setEstado('I');
         } catch (AlumnoException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
         }        
@@ -139,9 +139,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Integer>{
 
     @Override
     public List<Alumno> findAll() throws DAOException {
-        
-        // Solo los Activos (A/M)
-        return findAll(false);
+            return findAll(false);
     }
 
     @Override

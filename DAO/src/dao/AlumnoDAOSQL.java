@@ -20,10 +20,6 @@ import persona.AlumnoException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Gabriel
- */
 public class AlumnoDAOSQL extends DAO<Alumno, Integer>{
 
     private Connection conn;
@@ -172,7 +168,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Integer>{
         try {
             selectCountPS.setInt(1, dni);
             ResultSet rs = selectCountPS.executeQuery();
-            return rs.next() && rs.getInt(1) > 0;
+            return rs.next() && rs.getInt("DNI") > 0;
         } catch (SQLException ex) {
             throw new AlumnoDAOException("Error Sql al intentar leer un alumno ==>"+ex.getMessage());
         }
@@ -186,7 +182,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Integer>{
            
             ResultSet rs = findAllPS.executeQuery();
             while(rs.next()) {
-                if(all || rs.getString("ESTADO").charAt(0) != 'B'){
+                if(all || rs.getString("ESTADO").charAt(0) != 'I'){
                     alu = new Alumno();
                     alu.setDni(rs.getInt("DNI"));
                     alu.setApyNom(rs.getString("APY_NOM"));

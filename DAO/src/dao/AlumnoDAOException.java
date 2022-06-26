@@ -5,10 +5,6 @@
  */
 package dao;
 
-/**
- *
- * @author Gabriel
- */
 public class AlumnoDAOException extends DAOException {
 
     public AlumnoDAOException(String mensaje) {
