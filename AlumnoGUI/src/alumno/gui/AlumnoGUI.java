@@ -109,11 +109,6 @@ public class AlumnoGUI extends javax.swing.JFrame {
                 verEliminadosRadioButtonItemStateChanged(evt);
             }
         });
-        verEliminadosRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verEliminadosRadioButtonActionPerformed(evt);
-            }
-        });
 
         agregarButton.setText("Agregar");
         agregarButton.setEnabled(false);
@@ -376,18 +371,23 @@ public class AlumnoGUI extends javax.swing.JFrame {
             return;
         }
 
-        int resp = JOptionPane.showConfirmDialog(this, "Estás seguro que querés eliminar a " + alu.getApyNom(), "Confirmar Eliminación",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(alu.getEstado() != 'I'){
+            int resp = JOptionPane.showConfirmDialog(this, "¿Estás seguro que querés eliminar a " + alu.getApyNom() + "?", "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-        if (resp == JOptionPane.YES_OPTION) {
-            try {
-                dao.delete(alu.getDni());
-                alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
-            } catch (DAOException ex) {
-                JOptionPane.showMessageDialog(this, "Eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            if (resp == JOptionPane.YES_OPTION) {
+                try {
+                    dao.delete(alu.getDni());
+                    alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
+                } catch (DAOException ex) {
+                    JOptionPane.showMessageDialog(this, "Eliminar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                alumnoModel.refrescarModelo();
             }
-
-            alumnoModel.refrescarModelo();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "El alumno seleccionado ya fue eliminado.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_eliminarButtonActionPerformed
 
@@ -495,11 +495,6 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_connDBButtonActionPerformed
-
-    private void verEliminadosRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEliminadosRadioButtonActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_verEliminadosRadioButtonActionPerformed
 
 
     private void verEliminadosRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_verEliminadosRadioButtonItemStateChanged
