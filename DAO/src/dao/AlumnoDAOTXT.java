@@ -156,7 +156,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Integer>{
             while ((linea = raf.readLine())!=null) {
                 campos = linea.split(Persona.DELIM);
                 Alumno alu = Alumno.string2Alumno(campos);
-                if (all || alu.getEstado()!='B') {
+                if (all || alu.getEstado()!='I') {
                     lista.add(alu);    
                 }
             }
