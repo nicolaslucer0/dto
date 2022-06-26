@@ -361,15 +361,6 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_modificarButtonActionPerformed
 
-    private boolean aluModificado(Alumno aluOri, Alumno aluMod) {
-        return (!aluOri.getApyNom().equals(aluMod.getApyNom())
-                || !aluOri.getSexo().equals(aluMod.getSexo())
-                || !aluOri.getFechaNac().equals(aluMod.getFechaNac())
-                || !aluOri.getCantMatAprob().equals(aluMod.getCantMatAprob())
-                || !aluOri.getPromedio().equals(aluMod.getPromedio())
-                || !aluOri.getFechaIngreso().equals(aluMod.getFechaIngreso()));
-    }
-
     private Alumno getSelectedAlumno() throws HeadlessException {
         final int selectedRow = alumnosTable.getSelectedRow();
         if (selectedRow < 0) {
