@@ -443,23 +443,27 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     private void repoComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_repoComboBoxItemStateChanged
         String tipoDAO = repoComboBox.getSelectedItem().toString();
-        
+
         if ("TXT".equals(tipoDAO)) {
             jPanel1.setVisible(false);
             pnlTXT.setVisible(true);
-            if (daoTXT != null) 
+            if (daoTXT != null) {
                 dao = daoTXT;
-           
+            }
+
         } else {
             jPanel1.setVisible(true);
             urlDBTextField.setEnabled(true);
             pnlTXT.setVisible(false);
-            if (daoSQL == null)
+            if (daoSQL == null) {
                 dao = daoSQL;
+            }
+
         }
 
         if (dao != null) {
             try {
+                disableConnectionButtons();
                 alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
             } catch (DAOException ex) {
                 Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex); //cambiar texto
@@ -468,6 +472,13 @@ public class AlumnoGUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_repoComboBoxItemStateChanged
+
+    private void disableConnectionButtons() {
+        urlDBTextField.setEnabled(false);
+        passwordDBField.setEnabled(false);
+        userDBTextField.setEnabled(false);
+        connDBButton.setEnabled(false);
+    }
 
     private void connDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connDBButtonActionPerformed
         Map<String, String> config = new HashMap();
@@ -487,6 +498,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
         habilitarBotones();
 
         try {
+            disableConnectionButtons();
             alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
         } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar la grilla", "Error", JOptionPane.ERROR_MESSAGE);
