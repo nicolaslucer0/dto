@@ -1,3 +1,4 @@
 38307024	Baldo Ignacio	f	18/06/1994	5	04/06/2021	5.5	A
 37376896	 Gabriel Cascallares	m	05/04/1993	10	02/06/2018	6.6	A
 38026836	      Lucero Nicolas	m	11/03/1994	15	06/06/2020	8.0	I
+00020393	      Lucero Nicolas	f	01/06/2022	2	30/06/2022	2.0	I
