@@ -114,7 +114,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
 
         jLabel7.setText("Promedio");
 
-        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alta", "Baja", "Modificacion" }));
+        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         jLabel8.setText("Estado");
 
@@ -143,7 +143,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(apynTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fecIngDateChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                    .addComponent(fecIngDateChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(estadoComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(sexoComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -342,7 +342,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
         aluDTO.setCantMatAprob(Integer.valueOf(CantMatAprobadasTextField.getText()));
         aluDTO.setFechaIngreso(new MiCalendario(fecIngDateChooser.getCalendar()));
         aluDTO.setPromedio(Double.valueOf(PromedioTextField.getText()));
-        Character estadoCBO = "Alta".equals(estadoComboBox.getSelectedItem().toString()) ? 'A' : "Baja".equals(estadoComboBox.getSelectedItem().toString()) ? 'B' : 'M';
+        Character estadoCBO = "Activo".equals(estadoComboBox.getSelectedItem().toString()) ? 'A' : 'I';
         aluDTO.setEstado(estadoCBO);        
     }
 
@@ -355,7 +355,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
         CantMatAprobadasTextField.setText(String.valueOf(alu.getCantMatAprob()));
         fecIngDateChooser.setCalendar(alu.getFechaIngreso());
         PromedioTextField.setText(alu.getPromedio().toString());
-        estadoComboBox.setSelectedIndex(alu.getEstado() == 'A' ? 0 : alu.getEstado() == 'B' ? 1 : 2);
+        estadoComboBox.setSelectedIndex(alu.getEstado() == 'A' ? 0 : 1);
     }
 
     private void habilitarDeshabilitarCampos(boolean isUpdate) {

@@ -69,8 +69,8 @@ public class Alumno extends Persona {
 
     public void setEstado(Character estado)throws AlumnoException {   
         estado = Character.toUpperCase(estado);
-        if (!estado.equals('A') && !estado.equals('B') && !estado.equals('M')) {
-            throw new AlumnoException("Error al setear el Estado (debe contener a/b/m)");
+        if (!estado.equals('A') && !estado.equals('I')) {
+            throw new AlumnoException("Error al setear el Estado (debe contener a/i)");
         }
         this.estado = estado;         
     } 

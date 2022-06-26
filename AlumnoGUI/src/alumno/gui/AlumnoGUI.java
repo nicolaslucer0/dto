@@ -347,13 +347,8 @@ public class AlumnoGUI extends javax.swing.JFrame {
         }
 
         try {
-
-            if (aluModificado(aluOrigen, alu)) {
-                alu.setEstado('M');
-            }
-
             dao.update(alu);
-        } catch (DAOException | AlumnoException ex) {
+        } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

@@ -51,7 +51,7 @@ public class AlumnoModel extends AbstractTableModel {
             case 0: return alu.getDni();
             case 1: return alu.getApyNom();
             case 2: return alu.getFechaNac();
-            case 3: return alu.getEstado() == 'A' ? "Activo" : alu.getEstado() == 'B' ? "Eliminado" : "Modificado";
+            case 3: return alu.getEstado() == 'A' ? "Activo" : "Inactivo";
             
             default: return null;
         }
