@@ -50,7 +50,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Integer>{
             
             // Count
             String sqlSelectCount = "SELECT COUNT(*) FROM alumnos WHERE DNI = ?;";
-            selectCountPS = conn.prepareStatement(sqlSelectCount);
+            selectCountPS = conn.prepareStatement("aguante la vida");
             
             // Insert
             String sqlInsert = "INSERT INTO alumnos\n" +
