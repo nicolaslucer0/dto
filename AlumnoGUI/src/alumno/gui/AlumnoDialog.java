@@ -21,10 +21,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
     private Alumno aluDTO;
     private boolean isSave;
     public boolean modificado;
-    
-    
-    
-    
+
     public AlumnoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -212,22 +209,18 @@ public class AlumnoDialog extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            if(camposCompletados())
-            {
-                if(ValidarDatos())
-                {
-                    form2Alu();
+            if (isCompleteForm()) {
+                if (validateData()) {
+                    mapFormToAlumno();
                     isSave = true;
                     setVisible(false);
-                }                
-            }
-            else
-            {
+                }
+            } else {
                 JOptionPane.showMessageDialog(this, "Debe completar todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (PersonaException | AlumnoException ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } 
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -235,23 +228,23 @@ public class AlumnoDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void numDocTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numDocTextFieldKeyTyped
-        if (this.numDocTextField.getText().length()== 10) 
-         evt.consume();     
+        if (this.numDocTextField.getText().length() == 10)
+            evt.consume();
     }//GEN-LAST:event_numDocTextFieldKeyTyped
 
     private void CantMatAprobadasTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CantMatAprobadasTextFieldKeyTyped
-        if (CantMatAprobadasTextField.getText().length()== 3) 
-         evt.consume();
+        if (CantMatAprobadasTextField.getText().length() == 3)
+            evt.consume();
     }//GEN-LAST:event_CantMatAprobadasTextFieldKeyTyped
 
     private void PromedioTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PromedioTextFieldKeyTyped
-        if (PromedioTextField.getText().length()== 5) 
-         evt.consume();
+        if (PromedioTextField.getText().length() == 5)
+            evt.consume();
     }//GEN-LAST:event_PromedioTextFieldKeyTyped
 
     private void apynTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apynTextFieldKeyTyped
-        if (apynTextField.getText().length()== 30) 
-         evt.consume();
+        if (apynTextField.getText().length() == 30)
+            evt.consume();
     }//GEN-LAST:event_apynTextFieldKeyTyped
 
     /**
@@ -297,43 +290,38 @@ public class AlumnoDialog extends javax.swing.JDialog {
     }
 
     /**
-     * 
-     * @param alu Si en null ==> se agrega un alumno - si no, es consultar/modificar
+     *
+     * @param alu Si en null ==> se agrega un alumno - si no, es
+     * consultar/modificar
      */
     Alumno mostrar(Alumno alu, boolean isUpdate) throws PersonaException, AlumnoException {
-        if (alu==null) {   
-            changeCondicionEstado(false);
+        if (alu == null) {
+            changeStateComboBox(false);
             alu = new Alumno();
-        }
-        else {
-            alu2Form(alu);            
-            habilitarDeshabilitarCampos(isUpdate);            
+        } else {
+            mapAlumnoToForm(alu);
+            enableOrDisableFields(isUpdate);
         }
         aluDTO = alu;
-        
-        // Se Supende el hilo de ejecución. Se libera cuando se cierra el diálogo (setVisible(false))
-        
+
         setVisible(true);
-        
-        // se cerró el diálogo
+
         if (!isSave) {
             return null;
         }
-        form2Alu();
+        mapFormToAlumno();
         return this.aluDTO;
     }
-    
-    public void changeEstadoDNI(boolean estado)
-    {
+
+    public void changeEstadoDNI(boolean estado) {
         numDocTextField.setEnabled(estado);
     }
-    
-    public void changeCondicionEstado(boolean estado)
-    {
+
+    public void changeStateComboBox(boolean estado) {
         estadoComboBox.setEnabled(estado);
     }
 
-    private void form2Alu() throws PersonaException, AlumnoException {
+    private void mapFormToAlumno() throws PersonaException, AlumnoException {
         // TODO Revisar si mostramos el error y se mantiene el diálogo abierto
         aluDTO.setDni(Integer.valueOf(numDocTextField.getText()));
         aluDTO.setApyNom(apynTextField.getText());
@@ -343,24 +331,22 @@ public class AlumnoDialog extends javax.swing.JDialog {
         aluDTO.setFechaIngreso(new MiCalendario(fecIngDateChooser.getCalendar()));
         aluDTO.setPromedio(Double.valueOf(PromedioTextField.getText()));
         Character estadoCBO = "Activo".equals(estadoComboBox.getSelectedItem().toString()) ? 'A' : 'I';
-        aluDTO.setEstado(estadoCBO);        
+        aluDTO.setEstado(estadoCBO);
     }
 
-    private void alu2Form(Alumno alu) {
+    private void mapAlumnoToForm(Alumno alu) {
         // No es una creación??
         numDocTextField.setText(String.valueOf(alu.getDni()));
         apynTextField.setText(alu.getApyNom());
         fecNacDateChooser.setCalendar(alu.getFechaNac());
-        sexoComboBox.setSelectedIndex(alu.getSexo()=='f'||alu.getSexo()=='F'?0:1);
+        sexoComboBox.setSelectedIndex(alu.getSexo() == 'f' || alu.getSexo() == 'F' ? 0 : 1);
         CantMatAprobadasTextField.setText(String.valueOf(alu.getCantMatAprob()));
         fecIngDateChooser.setCalendar(alu.getFechaIngreso());
         PromedioTextField.setText(alu.getPromedio().toString());
         estadoComboBox.setSelectedIndex(alu.getEstado() == 'A' ? 0 : 1);
     }
 
-    private void habilitarDeshabilitarCampos(boolean isUpdate) {
-        // Habilitar/Deshabilitar dependiendo de la acción
-        //numDocTextField.setEnabled(isUpdate);
+    private void enableOrDisableFields(boolean isUpdate) {
         apynTextField.setEnabled(isUpdate);
         fecNacDateChooser.setEnabled(isUpdate);
         sexoComboBox.setEnabled(isUpdate);
@@ -368,10 +354,10 @@ public class AlumnoDialog extends javax.swing.JDialog {
         fecIngDateChooser.setEnabled(isUpdate);
         PromedioTextField.setEnabled(isUpdate);
         estadoComboBox.setEnabled(isUpdate);
-        saveButton.setEnabled(isUpdate);               
+        saveButton.setEnabled(isUpdate);
     }
 
-        private boolean camposCompletados() {
+    private boolean isCompleteForm() {
         return numDocTextField.getText().trim().length() > 0
                 && apynTextField.getText().trim().length() > 0
                 && fecNacDateChooser.getCalendar() != null
@@ -379,9 +365,9 @@ public class AlumnoDialog extends javax.swing.JDialog {
                 && CantMatAprobadasTextField.getText().trim().length() > 0
                 && fecIngDateChooser.getCalendar() != null
                 && PromedioTextField.getText().trim().length() > 0
-                && estadoComboBox.getSelectedItem().toString().trim().length() > 0;   
+                && estadoComboBox.getSelectedItem().toString().trim().length() > 0;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CantMatAprobadasTextField;
     private javax.swing.JTextField PromedioTextField;
@@ -403,13 +389,29 @@ public class AlumnoDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> sexoComboBox;
     // End of variables declaration//GEN-END:variables
 
-    private boolean ValidarDatos() throws AlumnoException {
+    private boolean validateData() throws AlumnoException {
+        try {
+            Long.valueOf(numDocTextField.getText());
+        } catch (NumberFormatException e) {
+            throw new AlumnoException("El dni debe ser numérico.");
+        }
         
-        Calendar fecN = (Calendar)fecNacDateChooser.getCalendar();
-        Calendar fecI = (Calendar)fecIngDateChooser.getCalendar();
+        try {
+            Integer.valueOf(CantMatAprobadasTextField.getText());
+        } catch (NumberFormatException e) {
+            throw new AlumnoException("La cantidad de materias aprobadas debe ser numérica.");
+        }
+        
+        try {
+            Double.valueOf(PromedioTextField.getText());
+        } catch (NumberFormatException e) {
+            throw new AlumnoException("El promedio debe ser numérico.");
+        }
 
-        if(fecN.getTime().after(fecI.getTime()))
-        {            
+        Calendar fecN = (Calendar) fecNacDateChooser.getCalendar();
+        Calendar fecI = (Calendar) fecIngDateChooser.getCalendar();
+
+        if (fecN.getTime().after(fecI.getTime())) {
             throw new AlumnoException("La fecha de nacimiento no puede superar a la fecha de ingreso."); //To change body of generated methods, choose Tools | Templates.
         }
         return true;
