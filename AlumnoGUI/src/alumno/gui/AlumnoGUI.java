@@ -348,11 +348,12 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
         try {
             dao.update(alu);
+            alumnoModel.setLista(dao.findAll(verEliminadosRadioButton.isSelected()));
         } catch (DAOException ex) {
             JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         alumnoModel.refrescarModelo();
 
     }//GEN-LAST:event_modificarButtonActionPerformed
@@ -372,9 +373,9 @@ public class AlumnoGUI extends javax.swing.JFrame {
             return;
         }
 
-        if(alu.getEstado() != 'I'){
+        if (alu.getEstado() != 'I') {
             int resp = JOptionPane.showConfirmDialog(this, "¿Estás seguro que querés eliminar a " + alu.getApyNom() + "?", "Confirmar Eliminación",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             if (resp == JOptionPane.YES_OPTION) {
                 try {
@@ -386,8 +387,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
                 alumnoModel.refrescarModelo();
             }
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(this, "El alumno seleccionado ya fue eliminado.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_eliminarButtonActionPerformed
@@ -409,7 +409,6 @@ public class AlumnoGUI extends javax.swing.JFrame {
 
     private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
         try {
-            // Show Modal
             AlumnoDialog dialog = new AlumnoDialog(this, true);
             Alumno alu;
 
@@ -417,7 +416,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
             alu = dialog.mostrar(null, false);
 
             if (alu != null) {
-                    dao.create(alu);
+                dao.create(alu);
                 alumnoModel.getLista().add(alu);
                 alumnoModel.refrescarModelo();
             }
@@ -433,12 +432,12 @@ public class AlumnoGUI extends javax.swing.JFrame {
         alumnoModel.setLista(new ArrayList<>());
         if ("TXT".equals(tipoDAO)) {
             jPanel1.setVisible(false);
-            pnlTXT.setVisible(true);    
+            pnlTXT.setVisible(true);
             dao = daoTXT;
         } else {
             jPanel1.setVisible(true);
             urlDBTextField.setEnabled(true);
-            pnlTXT.setVisible(false);    
+            pnlTXT.setVisible(false);
             dao = daoSQL;
         }
 
