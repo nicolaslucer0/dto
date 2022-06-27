@@ -5,6 +5,7 @@
  */
 package alumno.gui;
 
+import dao.AlumnoDAOException;
 import dao.AlumnoDAOSQL;
 import dao.AlumnoDAOTXT;
 import dao.DAO;
@@ -416,16 +417,12 @@ public class AlumnoGUI extends javax.swing.JFrame {
             alu = dialog.mostrar(null, false);
 
             if (alu != null) {
-                try {
                     dao.create(alu);
-                } catch (DAOException ex) {
-                    Logger.getLogger(AlumnoGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 alumnoModel.getLista().add(alu);
                 alumnoModel.refrescarModelo();
             }
 
-        } catch (PersonaException | AlumnoException ex) {
+        } catch (PersonaException | AlumnoException | DAOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 

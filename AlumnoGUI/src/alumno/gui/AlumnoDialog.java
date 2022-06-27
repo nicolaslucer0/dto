@@ -5,6 +5,7 @@
  */
 package alumno.gui;
 
+import dao.AlumnoDAOException;
 import fecha.MiCalendario;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
@@ -218,7 +219,7 @@ public class AlumnoDialog extends javax.swing.JDialog {
             } else {
                 JOptionPane.showMessageDialog(this, "Debe completar todos los datos", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (PersonaException | AlumnoException ex) {
+        } catch (PersonaException | AlumnoException ex ) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
