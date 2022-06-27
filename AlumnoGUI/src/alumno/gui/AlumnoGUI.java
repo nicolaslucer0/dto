@@ -38,6 +38,7 @@ public class AlumnoGUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Alumnos GUI");
+        setResizable(false);
 
         alumnoModel = new AlumnoModel();
         alumnosTable.setModel(alumnoModel);

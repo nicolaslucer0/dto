@@ -13,3 +13,5 @@ TestDAO/nbproject/private/private.properties
 AlumnoGUI/nbproject/private/private.xml
 DAO/nbproject/private/private.xml
 Persona/nbproject/private/private.xml
+AlumnoGUI/build
+AlumnoGUI/build/
